@@ -1,0 +1,7 @@
+{% for place in places %}
+    <div class="place">
+        <a href="/place/{{ place.id }}" class="place__title">{{ place.placeName }}</a>
+        <p class="place__description">{{ place.description }}</p>
+        <input type="hidden" data-place-type="{{ place.placeTypes }}">
+    </div>
+{% endfor %}

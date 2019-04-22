@@ -1,0 +1,5 @@
+<ul>
+    {% for placeType in placeTypes %}
+            <li id="{{ placeType.id }}"><a href="/?filter={{ placeType.id }}">{{ placeType.placeTypeName }}</a></li>
+    {% endfor %}
+</ul>
