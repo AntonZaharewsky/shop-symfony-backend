@@ -76,7 +76,7 @@ class PlaceController
     public function placeDetailAction(Request $request, int $id)
     {
         return new JsonResponse([
-            'menus' => $this->serializer->serialize($this->menusModel->getByPlaceId($id), 'json'),
+            'menus' => $this->serializer->serialize($this->menusModel->getByPlaceIdForDetails($id), 'json'),
             'products' => $this->placeModel->getPlaceDetails($id)
         ]);
     }
@@ -86,26 +86,52 @@ class PlaceController
      */
     public function postPlaceAction(Request $request)
     {
-        $name = $request->get('name');
-        $smallDescription = $request->request->get('smallDescription');
-        $description = $request->request->get('description');
-        $placeTypeId = $request->request->get('placeTypeId');
-        $addressId = $request->request->get('addressId');
+        $requestContent = json_decode($request->getContent(), true);
 
-var_dump([
-    'name' => $name,
-    'smallDescription' => $smallDescription,
-    'description' => $description,
-    'placeTypeId' => $placeTypeId,
-    'addressesId' => $addressId
-]); die;
-//        $this->placeModel->setPlace([
-//            'name' => $name,
-//            'smallDescription' => $smallDescription,
-//            'description' => $description,
-//            'placeTypeId' => $placeTypeId,
-//            'addressesId' => $addressId
-//        ]);
+        $this->placeModel->setPlace([
+            'name' => $requestContent['name'],
+            'smallDescription' => $requestContent['smallDescription'],
+            'description' => $requestContent['description'],
+            'placeTypeId' => $requestContent['placeTypeId'],
+            'addressesId' => $requestContent['addressId'],
+            'image' => $requestContent['image']
+        ]);
+
+        return new JsonResponse([]);
+    }
+
+    /**
+     * @Route("/admin/place/{id}", methods={"PATCH"})
+     *
+     * @param Request $request
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function updatePlaceAction(Request $request, int $id)
+    {
+        $requestContent = json_decode($request->getContent(), true);
+
+        $this->placeModel->updatePlace([
+            'name' => $requestContent['name'],
+            'smallDescription' => $requestContent['smallDescription'],
+            'description' => $requestContent['description'],
+            'placeTypeId' => $requestContent['placeTypeId'],
+            'image' => $requestContent['image'],
+            'id' => $id
+        ]);
+
+        return new JsonResponse([]);
+    }
+
+    /**
+     * @Route("/admin/place/{id}", methods={"DELETE"})
+     *
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function deletePlaceAction(int $id)
+    {
+        $this->placeModel->deletePlace($id);
 
         return new JsonResponse([]);
     }

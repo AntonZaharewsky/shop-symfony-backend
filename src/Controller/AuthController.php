@@ -18,13 +18,11 @@ class AuthController extends AbstractController
     public function register(Request $request, UserPasswordEncoderInterface $encoder)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $email = $request->request->get('email');
-        $password = $request->request->get('password');
+        $requestContent = json_decode($request->getContent(), true);
 
         $user = new User();
-        $user->setEmail($email);
-        $user->setPassword($encoder->encodePassword($user, $password));
+        $user->setEmail($requestContent['email']);
+        $user->setPassword($encoder->encodePassword($user, $requestContent['password']));
         $em->persist($user);
         $em->flush();
 

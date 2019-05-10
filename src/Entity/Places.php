@@ -57,6 +57,13 @@ class Places
     private $placeTypesId;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="image", type="string")
+     */
+    private $image;
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -150,5 +157,15 @@ class Places
     public function setPlaceTypes(int $placeTypesId): void
     {
         $this->placeTypesId = $placeTypesId;
+    }
+
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image)
+    {
+        $this->image = $image;
     }
 }

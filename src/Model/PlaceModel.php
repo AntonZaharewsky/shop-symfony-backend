@@ -61,7 +61,7 @@ class PlaceModel
     public function getPlaceDetails($id)
     {
         $connection = $this->entityManager->getConnection();
-        $statement = $connection->prepare("SELECT * FROM products WHERE menu_id in (SELECT menus_id FROM menus_and_places WHERE Places_id = :id);");
+        $statement = $connection->prepare("SELECT * FROM products WHERE menu_id in (SELECT id FROM menus_and_places WHERE Places_id = :id);");
 
         $statement->bindValue('id', $id);
         $statement->execute();
@@ -73,8 +73,8 @@ class PlaceModel
     {
         $connection = $this->entityManager->getConnection();
         $statement = $connection->prepare(
-            "INSERT INTO places (place_name, small_description, description, place_types_id, adresses_id)
-                      VALUES (:place_name, :smallDescription, :description, :placeTypeId, :addressesId);"
+            "INSERT INTO places (place_name, small_description, description, place_types_id, adresses_id, image)
+                      VALUES (:place_name, :smallDescription, :description, :placeTypeId, :addressesId, :image);"
         );
 
         $statement->bindValue('place_name', $params['name']);
@@ -82,8 +82,32 @@ class PlaceModel
         $statement->bindValue('description', $params['description']);
         $statement->bindValue('placeTypeId', $params['placeTypeId']);
         $statement->bindValue('addressesId', $params['addressesId']);
+        $statement->bindValue('image', $params['image']);
         $statement->execute();
+    }
 
-        return $statement->fetchAll();
+    public function updatePlace(array $params)
+    {
+        $connection = $this->entityManager->getConnection();
+        $statement = $connection->prepare("
+            UPDATE places SET place_name = :place_name, small_description = :smallDescription, description = :description,
+            place_types_id = :placeTypeId, image = :image WHERE id = :id;
+        ");
+
+        $statement->bindValue('place_name', $params['name']);
+        $statement->bindValue('smallDescription', $params['smallDescription']);
+        $statement->bindValue('description', $params['description']);
+        $statement->bindValue('placeTypeId', $params['placeTypeId']);
+        $statement->bindValue('image', $params['image']);
+        $statement->bindValue('id', $params['id']);
+        $statement->execute();
+    }
+
+    public function deletePlace($placeId)
+    {
+        $connection = $this->entityManager->getConnection();
+        $statement = $connection->prepare("CALL DeletePlace(:placeId);");
+        $statement->bindValue('placeId', $placeId);
+        $statement->execute();
     }
 }

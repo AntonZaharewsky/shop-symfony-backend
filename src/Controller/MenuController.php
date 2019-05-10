@@ -27,6 +27,16 @@ class MenuController
     }
 
     /**
+     * @Route("/menu", methods={"GET"})
+     *
+     * @return JsonResponse
+     */
+    public function getAll(): JsonResponse
+    {
+        return new JsonResponse($this->serialier->serialize($this->menusModel->getAll(), 'json'));
+    }
+
+    /**
      * @Route("/place/{placeId}/menu", methods={"GET"})
      *
      * @param int $placeId
@@ -38,5 +48,15 @@ class MenuController
             $this->menusModel->getByPlaceId($placeId),
             'json'
         ));
+    }
+
+    /**
+     * @Route("/menuandplace", methods={"GET"})
+     *
+     * @param int $menuId
+     */
+    public function getMenuAndPlaceByMenuId(): JsonResponse
+    {
+        return new JsonResponse($this->menusModel->getMenuAndPlace());
     }
 }

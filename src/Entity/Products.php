@@ -43,6 +43,26 @@ class Products
     private $image;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="cost", type="integer", nullable=true)
+     */
+    private $cost;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="menu_id", type="integer", nullable=true)
+     */
+    private $menuId;
+
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
      * @return string
      */
     public function getProductName(): string
@@ -50,4 +70,23 @@ class Products
         return $this->productName;
     }
 
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function getImage(): string
+    {
+        return $this->image;
+    }
+
+    public function getCost(): int
+    {
+        return $this->cost;
+    }
+
+    public function getMenuId(): int
+    {
+        return $this->menuId;
+    }
 }
