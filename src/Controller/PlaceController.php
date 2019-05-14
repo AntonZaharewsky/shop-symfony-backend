@@ -46,7 +46,7 @@ class PlaceController
     }
 
     /**
-     * @Route("/api/place", methods={"GET"})
+     * @Route("/place", methods={"GET"})
      */
     public function placesAction(Request $request)
     {

@@ -4,12 +4,13 @@ namespace App\Controller;
 
 use App\Model\OrderModel;
 use App\Model\UserModel;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-class OrderController
+class OrderController extends AbstractController
 {
 
     /**
@@ -59,7 +60,7 @@ class OrderController
     }
 
     /**
-     * @Route("/order/delivery/{id}", methods={"POST"})
+     * @Route("/admin/order/delivery/{id}", methods={"POST"})
      *
      * @param $id
      *
@@ -73,7 +74,7 @@ class OrderController
     }
 
     /**
-     * @Route("/order/delivery/{id}/rollback", methods={"POST"})
+     * @Route("/admin/order/delivery/{id}/rollback", methods={"POST"})
      *
      * @param $id
      * @return JsonResponse
@@ -86,13 +87,36 @@ class OrderController
     }
 
     /**
-     * @Route("/order/{orderId}/lines", methods={"GET"})
+     * @Route("/api/order/{orderId}/lines", methods={"GET"})
      *
      * @param $orderId
      * @return JsonResponse
      */
     public function orderLinesAction($orderId) : JsonResponse
     {
-        return new JsonResponse($this->orderModel->getOrderLines($orderId));
+        return new JsonResponse([$this->orderModel->getOrderLines($orderId), $this->serializer->serialize($this->getUser(), 'json')]);
+    }
+
+
+    /**
+     * @Route("/order/{orderId}/history", methods={"GET"})
+     *
+     * @param $orderId
+     * @return JsonResponse
+     */
+    public function orderHistoryAction($orderId) : JsonResponse
+    {
+        return new JsonResponse($this->orderModel->getOrderHistory($orderId));
+    }
+
+    /**
+     * @Route("/profile/order/{userId}", methods={"GET"})
+     *
+     * @param $userId
+     * @return JsonResponse
+     */
+    public function getByUserIdAction($userId) : JsonResponse
+    {
+        return new JsonResponse($this->orderModel->getByUserId($userId));
     }
 }

@@ -113,4 +113,24 @@ class OrderModel
 
         return $statement->fetchAll();
     }
+
+    public function getOrderHistory($orderId)
+    {
+        $connection = $this->entityManager->getConnection();
+        $statement = $connection->prepare("CALL GetOrderHistory(:orderId);");
+        $statement->bindValue('orderId', $orderId);
+        $statement->execute();
+
+        return $statement->fetchAll();
+    }
+
+    public function getByUserId($userId)
+    {
+        $connection = $this->entityManager->getConnection();
+        $statement = $connection->prepare("CALL ProfileOrderSummary(:userId);");
+        $statement->bindValue('userId', $userId);
+        $statement->execute();
+
+        return $statement->fetchAll();
+    }
 }

@@ -57,6 +57,18 @@ class User implements UserInterface
      */
     private $salt;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="role", type="string")
+     */
+    private $role;
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
     public function getPassword()
     {
         return $this->password;
@@ -84,7 +96,12 @@ class User implements UserInterface
     
     public function getRoles()
     {
-        return ['ROLE_USER'];
+        return ['ROLE_' . $this->role];
+    }
+
+    public function setRoles(string $role)
+    {
+        $this->role = $role;
     }
 
     public function eraseCredentials()
