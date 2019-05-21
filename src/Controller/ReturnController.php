@@ -43,4 +43,16 @@ class ReturnController
     {
         return new JsonResponse($this->returnModel->getReturnReasons());
     }
+
+    /**
+     * @Route("/isreturned/{orderId}", methods={"GET"})
+     *
+     * @param int $orderId
+     *
+     * @return JsonResponse
+     */
+    public function isReturnedAction(int $orderId) : JsonResponse
+    {
+        return new JsonResponse($this->returnModel->isOrderReturned($orderId));
+    }
 }

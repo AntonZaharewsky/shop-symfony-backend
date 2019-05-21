@@ -17,7 +17,7 @@ class ImageController
         $status = array('status' => "success","fileUploaded" => false);
         if(!is_null($file)){
             $filename = $file->getClientOriginalName();
-            $path = "/shop-frontend/public/images/";
+            $path = "../../shop-frontend/public/images/";
             $file->move($path, $filename);
             $status = ['status' => "success","fileUploaded" => true];
         }

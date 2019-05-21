@@ -24,4 +24,20 @@ class PaymentMethodModel
 
         return $statement->fetchAll();
     }
+
+    public function addPaymentMethod(string $paymentMethodName)
+    {
+        $connection = $this->entityManager->getConnection();
+        $statement = $connection->prepare("INSERT INTO payment_methods (payment_method_name) VALUES (:paymentMethodName);");
+        $statement->bindValue('paymentMethodName', $paymentMethodName);
+        $statement->execute();
+    }
+
+    public function removeMethod(int $id)
+    {
+        $connection = $this->entityManager->getConnection();
+        $statement = $connection->prepare("DELETE FROM payment_methods WHERE id = :id;");
+        $statement->bindValue('id', $id);
+        $statement->execute();
+    }
 }

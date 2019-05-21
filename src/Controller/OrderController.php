@@ -94,7 +94,7 @@ class OrderController extends AbstractController
      */
     public function orderLinesAction($orderId) : JsonResponse
     {
-        return new JsonResponse([$this->orderModel->getOrderLines($orderId), $this->serializer->serialize($this->getUser(), 'json')]);
+        return new JsonResponse($this->orderModel->getOrderLines($orderId));
     }
 
 
